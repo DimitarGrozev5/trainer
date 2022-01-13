@@ -1,0 +1,28 @@
+.main {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 3rem;
+  bottom: 0px;
+
+  padding: 0rem;
+  display: flex;
+  justify-items: center;
+}
+
+.side-month {
+  writing-mode: vertical-rl;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.curr-month {
+  flex-grow: 1;
+  text-align: center;
+  border: 1px solid black;
+}
+
+.curr-month h2 {
+  padding: 0;
+  margin: 0;
+}

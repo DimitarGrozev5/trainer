@@ -1,0 +1,11 @@
+table.calendar {
+  border: 1px solid black;
+  width: 95%;
+  margin: auto;
+  border-collapse: collapse;
+}
+
+table.calendar th {
+  border: 1px solid black;
+  width: 14.2857%;
+}

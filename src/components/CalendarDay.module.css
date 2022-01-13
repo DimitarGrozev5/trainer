@@ -1,0 +1,25 @@
+
+td.calendar-day {
+  border: 1px solid black;
+  width: 14.2857%;
+  vertical-align: top;
+  height: 5rem;
+}
+
+td.today {
+  background-color: lightgray;
+}
+
+td.calendar-day h3 {
+  padding: 0;
+  margin: 0;
+  font-size: 1rem;
+  font-weight: normal;
+}
+
+td.calendar-day ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.75rem;
+}
