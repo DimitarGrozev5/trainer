@@ -8,6 +8,7 @@ const CalendarDay = (props) => {
 
   let classList = ["calendar-day"];
 
+  // Mark today
   if (
     today.getFullYear() === date.getFullYear() &&
     today.getMonth() === date.getMonth() &&
@@ -15,7 +16,18 @@ const CalendarDay = (props) => {
   ) {
     classList.push("today");
   }
+  // Mark marked date
+  if (
+    date.getFullYear() === props.markedDate.getFullYear() &&
+    date.getMonth() === props.markedDate.getMonth() &&
+    date.getDate() === props.markedDate.getDate()
+  ) {
+    classList.push("marked");
+  }
 
+  classList = classList.map((cl) => styles[cl]).join(" ");
+
+  // Get workouts labels
   const workouts = useSelector((state) => {
     return state.data.workoutPlannerRefs.map((workout) =>
       workoutsStore.get(workout)
@@ -24,14 +36,19 @@ const CalendarDay = (props) => {
   const workoutLabels = workouts
     .map((w) => w.checkDate(date))
     .filter((w) => w)
-    .reduce((p, c) => [...p, c], []);
+    .reduce((p, c) => [...p, c], [])
+    .slice(0, 2);
+  const filteredWorkoutLabels = workoutLabels.length > 2 ? [...workoutLabels, "..."] : workoutLabels;
 
-  classList = classList.map((cl) => styles[cl]).join(" ");
   return (
-    <td key={props.dayIndex} className={classList}>
+    <td
+      key={props.dayIndex}
+      className={classList}
+      onClick={props.onSelectDate(date)}
+    >
       <h3>{date.getDate()}</h3>
       <ul>
-        {workoutLabels.map((label, index) => {
+        {filteredWorkoutLabels.map((label, index) => {
           return <li key={index}>{label}</li>;
         })}
       </ul>

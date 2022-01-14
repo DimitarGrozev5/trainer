@@ -7,6 +7,10 @@ td.calendar-day {
 }
 
 td.today {
+  border: 2px solid black;
+}
+
+td.marked {
   background-color: lightgray;
 }
 

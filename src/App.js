@@ -20,15 +20,23 @@ function App() {
       {
         name: "etk-press-ladder",
         data: {
-          nextWorkoutDate: new Date(2022, 0, 13),
-          nextWorkout: 2,
+          nextWorkoutDate: new Date(2022, 0, 15),
+          nextWorkoutType: 1,
+          nextTarget: 5,
+          lastAchieved: [
+            [1, 4],
+            [1, 4],
+            [1, 4],
+            [1, 4],
+            [1, 4],
+          ],
         },
       },
       {
         name: "hiking-with-weight",
         data: {
           nextWorkoutDate: new Date(2022, 0, 16),
-          nextWorkout: 2,
+          nextWorkout: 1,
         },
       },
     ];

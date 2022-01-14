@@ -1,10 +1,18 @@
 import React from "react";
 import { useState } from "react/cjs/react.development";
 import Calendar from "./Calendar";
+import Today from "./Today";
 import styles from "./TrainerHub.module.css";
 
 const TrainerHub = () => {
-  const [activeDate, setActiveDate] = useState(new Date());
+  const todayFullDate = new Date();
+  const today = new Date(
+    todayFullDate.getFullYear(),
+    todayFullDate.getMonth(),
+    todayFullDate.getDate()
+  );
+  const [activeDate, setActiveDate] = useState(today);
+  const [markedDate, setMarkedDate] = useState(today);
 
   const monthName = activeDate.toLocaleString("default", { month: "long" });
   const prevMonthName = new Date(
@@ -30,6 +38,9 @@ const TrainerHub = () => {
     });
   };
 
+  const selectDateHandler = (date) => () => {
+    setMarkedDate(date);
+  };
 
   return (
     <main className={styles.main}>
@@ -44,7 +55,10 @@ const TrainerHub = () => {
         <Calendar
           forMonth={activeDate.getMonth()}
           forYear={activeDate.getFullYear()}
+          markedDate={markedDate}
+          onSelectDate={selectDateHandler}
         />
+        <Today targetDate={markedDate} />
       </div>
       <div
         className={`${styles["side-month"]} ${styles["next-month"]}`}

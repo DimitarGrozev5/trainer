@@ -1,0 +1,14 @@
+li.workout-details {
+  border: 1px solid black;
+  margin: 0.5rem;
+  padding: 0.5rem;
+}
+
+.workout-details__title {
+  padding: 0px;
+  margin: 0px;
+}
+
+.workout-details__description {
+  
+}

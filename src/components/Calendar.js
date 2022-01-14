@@ -66,7 +66,14 @@ const Calendar = (props) => {
           return (
             <tr key={weekIndex}>
               {week.map((day, dayIndex) => {
-                return <CalendarDay key={dayIndex} dateUTC={day} />;
+                return (
+                  <CalendarDay
+                    key={dayIndex}
+                    dateUTC={day}
+                    markedDate={props.markedDate}
+                    onSelectDate={props.onSelectDate}
+                  />
+                );
               })}
             </tr>
           );

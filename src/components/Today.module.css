@@ -1,0 +1,15 @@
+.today {
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+.today h3 {
+  padding: 0px;
+  margin: 0px;
+}
+
+.today ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}

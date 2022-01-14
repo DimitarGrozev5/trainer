@@ -1,3 +1,9 @@
+.container {
+  height: 100%;
+  display: grid;
+  grid-template-rows: 3rem auto;
+}
+
 .header {
   padding: 0 1rem;
 }
