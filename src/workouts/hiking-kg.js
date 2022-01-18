@@ -5,18 +5,16 @@ const hikingWithWeight = () => {
   const fullName = "Hiking With Weight";
 
   return {
+    handle: "hiking-with-weight",
     init: (data) => {
-      nextWorkout = new Date(
-        Math.floor(+data.nextWorkoutDate / (24 * 60 * 60 * 1000)) *
-          (24 * 60 * 60 * 1000)
-      );
+      nextWorkout = data.nextWorkoutDate;
+      nextWorkout.setHours(0, 0, 0, 0);
     },
     get nextWorkout() {
       return nextWorkout;
     },
     checkDate: (dateObject) => {
-      dateObject =
-        Math.floor(+dateObject / (24 * 60 * 60 * 1000)) * (24 * 60 * 60 * 1000);
+      dateObject.setHours(0, 0, 0, 0);
       if (dateObject < nextWorkout) {
         return false;
       }
@@ -28,7 +26,7 @@ const hikingWithWeight = () => {
     },
     getName: () => name,
     getFullName: () => fullName,
-    getWorkoutDescription: function (date)  {
+    getWorkoutDescription: function (date) {
       if (!this.checkDate(date)) {
         return "No workout today";
       }

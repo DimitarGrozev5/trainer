@@ -7,6 +7,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import PageTemplate from "./components/PageTemplate";
 import { useDispatch } from "react-redux";
 import loadWorkoutDataThunk from "./redux-store/thunks/load-workout-data";
+import DoWorkout from "./components/DoWorkout";
 
 function App() {
   const ctx = useContext(AppContext);
@@ -23,13 +24,7 @@ function App() {
           nextWorkoutDate: new Date(2022, 0, 15),
           nextWorkoutType: 1,
           nextTarget: 5,
-          lastAchieved: [
-            [1, 4],
-            [1, 4],
-            [1, 4],
-            [1, 4],
-            [1, 4],
-          ],
+          lastAchieved: [5, 4, 4, 4, 4],
         },
       },
       {
@@ -52,6 +47,7 @@ function App() {
           <Route index element={<Navigate to="trainer" />} />
           <Route path="login" element={<Navigate to="/" />} />
           <Route path="trainer" element={<TrainerHub />}></Route>
+          <Route path="trainer/:workout" element={<DoWorkout />} />
           <Route path="*" element={<Navigate to="trainer" />} />
         </Route>
       )}

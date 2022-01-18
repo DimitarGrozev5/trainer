@@ -1,0 +1,41 @@
+etk-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.ladder {
+  display: flex;
+  margin-bottom: 0.5rem;
+}
+
+.rung {
+  flex-grow: 1;
+  text-align: center;
+}
+
+.rung button {
+  display: inline-block;
+  width: 4rem;
+  height: 4rem;
+  font-size: 1.5rem;
+  border: 1px solid grey;
+  color: gray;
+  border-radius: 50%;
+  background-color: white;
+}
+
+.achieved button {
+  border: 1px solid black;
+  color: black;
+}
+
+.executed button {
+  border: 1px solid green;
+  color: green;
+  background-color: lightgreen;
+}
+
+.timer {
+  text-align: center;
+  flex-grow: 1;
+}
