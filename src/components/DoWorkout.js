@@ -14,15 +14,18 @@ const DoWorkout = () => {
     }
   };
 
+  const saveHandler = () => {};
+
   return (
     <div>
       <header>
         <nav>
           <button onClick={backHandler}>Back</button>
-          <h2>
-            {targetWorkout ? targetWorkout.getFullName() : "Workout not found"}
-          </h2>
+          <button onClick={saveHandler}>Save & Exit</button>
         </nav>
+        <h2>
+          {targetWorkout ? targetWorkout.getFullName() : "Workout not found"}
+        </h2>
       </header>
       {targetWorkout && <targetWorkout.Component />}
     </div>

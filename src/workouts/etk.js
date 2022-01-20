@@ -97,17 +97,23 @@ const etkPressLadder = () => {
       return workouts[targetWorkout].description();
     },
     get Component() {
-      return EtkComponent(nextTarget, lastAchieved);
+      return EtkComponent(nextWorkoutType, nextTarget, lastAchieved);
     },
   };
 };
 
-function EtkComponent(nextTarget, lastAchieved) {
+function EtkComponent(nextWorkoutType, firstWorkoutTarget, lastAchieved) {
   const Component = () => {
     const timerRef = useRef();
-    useSelector((state) => state.workoutPlannerRefs);
-    // const nextTarget = nextTarget;
-    // const lastAchieved = lastAchieved;
+
+    let nextTarget = firstWorkoutTarget;
+
+    if (nextWorkoutType === 2) {
+      nextTarget -= 2;
+    } else if (nextWorkoutType === 3) {
+      nextTarget -= 1;
+    }
+
     const laddersArr = [];
     for (let i = 0; i < 5; i++) {
       laddersArr.push([]);
@@ -176,7 +182,7 @@ function EtkComponent(nextTarget, lastAchieved) {
                   }
                   classList = classList.map((e) => styles[e]).join(" ");
                   return (
-                    <div className={classList} key={j}>
+                    <div className={classList} key={i * 100 + j}>
                       <button onClick={doLadderHandler(i, j, rung.executed)}>
                         {rung.val}
                       </button>

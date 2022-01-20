@@ -5,10 +5,12 @@ const dataSlice = createSlice({
   initialState: {
     workoutPlannerRefs: [],
     hystory: [],
+    update: 0,
   },
   reducers: {
     addWorkouts(state, action) {
       state.workoutPlannerRefs.push(...action.payload.reduxData);
+      state.update += 1;
     },
   },
 });
