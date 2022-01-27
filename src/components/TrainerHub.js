@@ -1,19 +1,24 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { useState } from "react/cjs/react.development";
 import Calendar from "./Calendar";
 import Today from "./Today";
 import styles from "./TrainerHub.module.css";
 
 const TrainerHub = () => {
+  // Set up the today date
   const todayFullDate = new Date();
   const today = new Date(
     todayFullDate.getFullYear(),
     todayFullDate.getMonth(),
     todayFullDate.getDate()
   );
+
+  // Set up component state
   const [activeDate, setActiveDate] = useState(today);
   const [markedDate, setMarkedDate] = useState(today);
 
+  // Get previous, current and next month names
   const monthName = activeDate.toLocaleString("default", { month: "long" });
   const prevMonthName = new Date(
     +activeDate - (activeDate.getDate() + 3) * 24 * 60 * 60 * 1000
@@ -22,6 +27,7 @@ const TrainerHub = () => {
     +activeDate + (30.5 - activeDate.getDate() + 3) * 24 * 60 * 60 * 1000
   ).toLocaleString("default", { month: "long" });
 
+  // Set up event handlers
   const changeMonthBackHandler = () => {
     setActiveDate((prevDate) => {
       return new Date(
@@ -65,6 +71,9 @@ const TrainerHub = () => {
         onClick={changeMonthForewardHandler}
       >
         {nextMonthName}
+      </div>
+      <div className={styles.add}>
+        <Link to="/trainer/add-workout">+</Link>
       </div>
     </main>
   );

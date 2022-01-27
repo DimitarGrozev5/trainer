@@ -3,11 +3,10 @@ import workoutsStore from "../../workouts";
 
 const loadWorkoutDataThunk = (data) => (dispatch, getState) => {
   // Initialize workouts
-  // console.log(data)
   data.forEach(({ name, data }) => {
     workoutsStore.get(name).init(data);
   });
-  const reduxData = data.map(({ name }) => name);
+  const reduxData = data;
   dispatch(dataActions.addWorkouts({ reduxData }));
 };
 

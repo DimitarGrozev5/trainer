@@ -1,6 +1,7 @@
 import produce from "immer";
 import React, { useRef } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react/cjs/react.development";
 import Timer from "../components/Timer";
 import styles from "./EtkComponent.module.css";
@@ -51,10 +52,18 @@ const etkPressLadder = () => {
   const name = "ETK";
   const fullName = "ETK Press Ladder Protocol";
 
+  const completeWorkout = (achieved) => {
+    nextWorkoutDate = new Date(+nextWorkoutDate + WORKOUT_REPEAT);
+    nextWorkoutType = (nextWorkoutType % 3) + 1;
+    lastAchieved = achieved;
+
+    nextTarget = 0;
+  };
+
   return {
     handle: "etk-press-ladder",
     init: (data) => {
-      const nextWorkoutSnaped = data.nextWorkoutDate;
+      const nextWorkoutSnaped = new Date(data.nextWorkoutDate);
       nextWorkoutSnaped.setHours(0, 0, 0, 0);
       const today = new Date();
       today.setHours(0, 0, 0, 0);
@@ -64,6 +73,24 @@ const etkPressLadder = () => {
       nextWorkoutType = data.nextWorkoutType;
       nextTarget = data.nextTarget;
       lastAchieved = data.lastAchieved;
+    },
+    currentData() {
+      return {
+        nextWorkoutDate: +nextWorkoutDate,
+        nextWorkoutType,
+        nextTarget,
+        lastAchieved,
+      };
+    },
+    get initialData() {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      return {
+        nextWorkoutDate: +today,
+        nextWorkoutType: 1,
+        nextTarget: 3,
+        lastAchieved: [0, 0, 0, 0, 0],
+      };
     },
     get nextWorkout() {
       return nextWorkoutDate;
@@ -96,28 +123,59 @@ const etkPressLadder = () => {
 
       return workouts[targetWorkout].description();
     },
+
+    skip: () => {
+      nextWorkoutDate = new Date(+nextWorkoutDate + WORKOUT_REPEAT);
+      nextWorkoutType = (nextWorkoutType % 3) + 1;
+    },
+
     get Component() {
-      return EtkComponent(nextWorkoutType, nextTarget, lastAchieved);
+      return EtkComponent(nextWorkoutType, nextTarget, lastAchieved, this);
     },
   };
 };
 
-function EtkComponent(nextWorkoutType, firstWorkoutTarget, lastAchieved) {
+function EtkComponent(
+  nextWorkoutType,
+  firstWorkoutTarget,
+  lastAchieved,
+  workoutObject
+) {
   const Component = () => {
     const timerRef = useRef();
 
-    let nextTarget = firstWorkoutTarget;
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const reduxData = useSelector((state) =>
+      state.data.workoutPlannerRefs.find(
+        (ref) => ref.handle === workoutObject.handle
+      )
+    );
+
+    // let nextWorkoutType = 1;
+    // let firstWorkoutTarget = 5;
+    // let lastAchieved = [3, 3, 3, 3, 3];
+
+    let targetRungs = firstWorkoutTarget;
+
+    let minSets = targetRungs === 3 ? 3 : 5;
+
+    let minRungs = targetRungs === 5 ? 4 : 3;
+    let maxRungs = targetRungs;
 
     if (nextWorkoutType === 2) {
-      nextTarget -= 2;
+      minRungs = targetRungs - 2;
+      maxRungs = minRungs;
     } else if (nextWorkoutType === 3) {
-      nextTarget -= 1;
+      minRungs = targetRungs - 1;
+      maxRungs = minRungs;
     }
 
     const laddersArr = [];
     for (let i = 0; i < 5; i++) {
       laddersArr.push([]);
-      for (let j = 0; j < nextTarget; j++) {
+      for (let j = 0; j < maxRungs; j++) {
         laddersArr[i].push({
           val: j + 1,
           executed: false,
@@ -135,13 +193,16 @@ function EtkComponent(nextWorkoutType, firstWorkoutTarget, lastAchieved) {
     };
 
     const getNextButtonIndex = (i, j) => {
+      i++;
+      j++;
+
       const result = [];
-      if (j < nextTarget - 1) {
-        result.push([i, j + 1]);
+      if (j < maxRungs) {
+        result.push([i - 1, j]);
       }
-      if (i < 4) {
-        if (j >= nextTarget - 2) {
-          result.push([i + 1, 0]);
+      if (i < 5) {
+        if (j >= minRungs) {
+          result.push([i, 0]);
         }
       }
       return result;
@@ -155,14 +216,74 @@ function EtkComponent(nextWorkoutType, firstWorkoutTarget, lastAchieved) {
 
       // If the button is not disabled and is the next set, then update the state
       if (!disabled) {
-        timerRef.current.startTimerFromZero();
         setLadders(
           produce((draft) => {
             draft[i][j].executed = true;
             draft[i][j].achieved = true;
-            setNextButton(getNextButtonIndex(i, j));
+
+            const nextButtonIndexes = getNextButtonIndex(i, j);
+            setNextButton(nextButtonIndexes);
+            // console.log(nextButtonIndexes.length);
+            nextButtonIndexes.length
+              ? timerRef.current.startTimerFromZero()
+              : timerRef.current.stopTimer();
           })
         );
+      }
+    };
+
+    const exitHandler = () => {
+      // Get only the completed ladders
+      const achievedLadders = ladders
+        .map((ladder) => ladder.filter((rung) => rung.executed))
+        .filter((ladder) => ladder.length);
+
+      // If the ladders are less than the minimum requirement prompt exit
+      if (achievedLadders.length < minSets) {
+        const result = window.confirm(
+          "The workout is not complete! Are you sure you want to exit?"
+        );
+        if (result) {
+          navigate("../trainer", { replace: true });
+        }
+      } else {
+        // If the last started ladder is not completed prompt exit
+        if (achievedLadders[achievedLadders.length - 1] < minRungs) {
+          const result = window.confirm(
+            "The last ladder is not complete! Are you sure you want to exit?"
+          );
+          if (result) {
+            navigate("../trainer", { replace: true });
+          }
+        }
+        // If the workout is satisfactoraly done, save and exit
+        else {
+          alert("The workout is done! Saving and exiting...");
+
+          let achieved = achievedLadders.map((ladder, index) =>
+            Math.max(ladder.length, lastAchieved[index])
+          );
+          if (achieved.length < 5) {
+            for (let i = achieved.length; i < 5; i++) {
+              achieved.push(lastAchieved[i] || 0);
+            }
+          }
+
+          let nextTarget = firstWorkoutTarget;
+          if (
+            achievedLadders.reduce((sum, lad) => sum + lad.length, 0) === 25
+          ) {
+            nextTarget = 3;
+          }
+
+          const nextData ={...workoutObject.currentData(), lastAchieved: achieved, };
+
+          const dataToDispatch = {
+            id: reduxData.id,
+            ...workoutObject,
+          };
+          console.log(dataToDispatch);
+        }
       }
     };
 
@@ -195,6 +316,9 @@ function EtkComponent(nextWorkoutType, firstWorkoutTarget, lastAchieved) {
         </div>
         <div className={styles.timer}>
           <Timer ref={timerRef} />
+        </div>
+        <div>
+          <button onClick={exitHandler}>I am done</button>
         </div>
       </div>
     );

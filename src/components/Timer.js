@@ -63,6 +63,10 @@ const Timer = (props, ref) => {
         setTimeLeft(timerInterval);
         setRunning(true);
       },
+      stopTimer: () => {
+        setTimeLeft(timerInterval);
+        setRunning(false);
+      }
     }),
     [timerInterval]
   );

@@ -1,8 +1,12 @@
+import { useSelector } from "react-redux";
 import styles from "./Calendar.module.css";
 import CalendarDay from "./CalendarDay";
 
 const Calendar = (props) => {
+  // Get the length of one day in miliseconds
   const DAY_TO_UTC = 24 * 60 * 60 * 1000;
+
+  // Variable to store the weeks of the month
   let cal = [];
 
   const month = +props.forMonth;

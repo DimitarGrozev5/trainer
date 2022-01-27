@@ -8,6 +8,8 @@ import PageTemplate from "./components/PageTemplate";
 import { useDispatch, useSelector } from "react-redux";
 import loadWorkoutDataThunk from "./redux-store/thunks/load-workout-data";
 import DoWorkout from "./components/DoWorkout";
+import AddWorkout from "./components/AddWorkout";
+import fetchDataFromDB from "./redux-store/thunks/fetchDataFromDB";
 
 function App() {
   const ctx = useContext(AppContext);
@@ -36,52 +38,7 @@ function App() {
     //   },
     // ];
     // dispatch(loadWorkoutDataThunk(DUMMY_WORKOUTS));
-    fetch("http://127.0.0.1/trainer-api/trainer-api/get-data.php", {
-      method: "POST",
-      mode: "cors",
-      body: JSON.stringify({
-        email: isLogged.email,
-        token: isLogged.token,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => {
-        // res
-        //   .clone()
-        //   .text()
-        //   .then((t) => console.log(t));
-        if (res.ok) {
-          return res.json();
-        } else {
-          return res.json().then((data) => {
-            throw new Error(data);
-          });
-        }
-      })
-      .then((data) => {
-        if (data.error) {
-          throw new Error(data.error);
-        } else {
-          return data;
-        }
-      })
-      .then((parsedJSON) => {
-        const fullyParsedData = parsedJSON.data
-          .map((field) => JSON.parse(field[0]))
-          .map((workout) => {
-            workout.data = {
-              ...workout.data,
-              nextWorkoutDate: new Date(workout.data.nextWorkoutDate),
-            };
-            return workout;
-          });
-        dispatch(loadWorkoutDataThunk(fullyParsedData));
-      })
-      .catch((err) => {
-        alert(err);
-      });
+    dispatch(fetchDataFromDB(isLogged));
     const DUMMY_HYSTORY = [];
   }, [dispatch]);
 
@@ -94,6 +51,7 @@ function App() {
           <Route index element={<Navigate to="trainer" />} />
           <Route path="login" element={<Navigate to="/" />} />
           <Route path="trainer" element={<TrainerHub />}></Route>
+          <Route path="trainer/add-workout" element={<AddWorkout />} />
           <Route path="trainer/:workout" element={<DoWorkout />} />
           <Route path="*" element={<Navigate to="trainer" />} />
         </Route>

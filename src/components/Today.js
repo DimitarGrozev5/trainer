@@ -17,9 +17,12 @@ const Today = (props) => {
 
   // Getting all of the workouts for the day
   const workouts = useSelector((state) => {
-    return state.data.workoutPlannerRefs.map((workout) =>
-      workoutsStore.get(workout)
-    );
+    return state.data.workoutPlannerRefs
+      .filter((w) => w.used)
+      .map((workout) => ({
+        ...workoutsStore.get(workout.handle),
+        id: workout.id,
+      }));
   });
   const todaysWorkouts = workouts.filter((w) => w.checkDate(date));
 
