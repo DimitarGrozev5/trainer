@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react/cjs/react.development";
-import Calendar from "./Calendar";
-import Today from "./Today";
+import Calendar from "./calendar/Calendar";
+import Today from "./today/Today";
 import styles from "./TrainerHub.module.css";
 
 const TrainerHub = () => {
@@ -27,7 +27,7 @@ const TrainerHub = () => {
     +activeDate + (30.5 - activeDate.getDate() + 3) * 24 * 60 * 60 * 1000
   ).toLocaleString("default", { month: "long" });
 
-  // Set up event handlers
+  // Set up event handlers for updating component state
   const changeMonthBackHandler = () => {
     setActiveDate((prevDate) => {
       return new Date(

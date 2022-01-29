@@ -1,0 +1,27 @@
+.modal {
+  position: fixed;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+
+  background-color: white;
+  text-align: center;
+  padding: 20vh 2rem;
+}
+
+.workouts {
+  list-style-type: none;
+  padding: 1rem;
+  margin: 0px;
+}
+
+.workout {
+  margin-bottom: 1rem;
+}
+
+.workout h2 {
+  font-weight: normal;
+  padding: 0px;
+  margin: 0px;
+}

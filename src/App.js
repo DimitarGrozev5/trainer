@@ -19,25 +19,6 @@ function App() {
   // Effect that loads data from the server and updat it to the store
   const dispatch = useDispatch();
   useEffect(() => {
-    // const DUMMY_WORKOUTS = [
-    //   {
-    //     name: "etk-press-ladder",
-    //     data: {
-    //       nextWorkoutDate: new Date(2022, 0, 20),
-    //       nextWorkoutType: 2,
-    //       nextTarget: 5,
-    //       lastAchieved: [5, 4, 4, 4, 4],
-    //     },
-    //   },
-    //   {
-    //     name: "hiking-with-weight",
-    //     data: {
-    //       nextWorkoutDate: new Date(2022, 0, 16),
-    //       nextWorkout: 1,
-    //     },
-    //   },
-    // ];
-    // dispatch(loadWorkoutDataThunk(DUMMY_WORKOUTS));
     dispatch(fetchDataFromDB(isLogged));
     const DUMMY_HYSTORY = [];
   }, [dispatch]);

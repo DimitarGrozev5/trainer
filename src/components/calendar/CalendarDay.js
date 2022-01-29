@@ -1,5 +1,5 @@
 import styles from "./CalendarDay.module.css";
-import workoutsStore from "../workouts";
+import workoutsStore from "../../workouts";
 import { useSelector } from "react-redux";
 
 const CalendarDay = (props) => {
@@ -30,22 +30,16 @@ const CalendarDay = (props) => {
 
   classList = classList.map((cl) => styles[cl]).join(" ");
 
-  // Get workouts labels
-  const test = useSelector((state) => {
-    return state;
-  });
-  //console.log(test)
-
+  // Get workouts and labels
   const workouts = useSelector((state) => {
-    return state.data.workoutPlannerRefs
-      .filter((w) => w.used)
-      .map((w) => workoutsStore.get(w.handle));
+    return state.data.workoutPlannerRefs.filter((w) => w.used);
   });
   const workoutLabels = workouts
-    .map((w) => w.checkDate(date))
-    .filter((w) => w)
-    .reduce((p, c) => [...p, c], [])
-    .slice(0, 2);
+    .filter((w) => {
+      return workoutsStore.get(w.handle).checkDate(w.data, date);
+    })
+    .map((w) => w.shortName);
+
   const filteredWorkoutLabels =
     workoutLabels.length > 2 ? [...workoutLabels, "..."] : workoutLabels;
 

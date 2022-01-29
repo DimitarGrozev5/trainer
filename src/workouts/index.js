@@ -1,4 +1,4 @@
-import etkPressLadder from "./etk";
+import etkPressLadder from "./etk/etk";
 import hikingWithWeight from "./hiking-kg";
 
 const workoutsStore = new Map();

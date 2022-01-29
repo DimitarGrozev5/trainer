@@ -6,6 +6,7 @@ import workoutsStore from "../workouts";
 import AppContext from "../context-store/app-context";
 import { useNavigate } from "react-router-dom";
 import removeWorkoutThunk from "../redux-store/thunks/remove-workout";
+import styles from "./AddWorkout.module.css";
 
 const AddWorkout = () => {
   const dispatch = useDispatch();
@@ -17,14 +18,7 @@ const AddWorkout = () => {
   const redirect = () => navigate("/trainer", { replace: true });
 
   // Select workouts from store
-  const workouts = useSelector((state) =>
-    state.data.workoutPlannerRefs.map((w) => {
-      return {
-        ...w,
-        details: workoutsStore.get(w.handle),
-      };
-    })
-  );
+  const workouts = useSelector((state) => state.data.workoutPlannerRefs);
 
   // Set up modals HTML
   const [showAddWorkoutModal, setShowAddWorkoutModal] = useState(false);
@@ -32,13 +26,13 @@ const AddWorkout = () => {
   const addWorkoutHandler = () => {
     const handle = showAddWorkoutModal;
     // Get initial data from the workoutsStore
-    const initData = workoutsStore.get(handle).initialData;
+    const initData = workoutsStore.get(handle).createInitialData();
 
     // Dispatch action creator to send the new workout to the server
     dispatch(addNewWorkoutThunk(handle, initData, auth, redirect));
   };
   const addWorkoutModal = (
-    <div>
+    <div className={styles.modal}>
       <h1>Are you sure you want to start doing the workout?</h1>
       <button onClick={addWorkoutHandler}>Yes</button>
       <button onClick={closeAddModalHandler}>Cancel</button>
@@ -54,7 +48,7 @@ const AddWorkout = () => {
     dispatch(removeWorkoutThunk(id, auth, redirect));
   };
   const removeWorkoutModal = (
-    <div>
+    <div className={styles.modal}>
       <h1>Are you sure you want to remove the workout?</h1>
       <h1>(Workout history will still be available)</h1>
       <button onClick={removeWorkoutHandler}>Yes</button>
@@ -77,11 +71,11 @@ const AddWorkout = () => {
     <div>
       {showAddWorkoutModal && addWorkoutModal}
       {showRemoveWorkoutModal && removeWorkoutModal}
-      <ul>
+      <ul className={styles.workouts}>
         {workouts.map((w) => {
           return (
-            <li key={w.handle}>
-              {w.details.getFullName()}
+            <li key={w.handle} className={styles.workout}>
+              <h2>{w.fullName}</h2>
               <button onClick={usedOrNoHandler(w.used, w.handle, w.id)}>
                 {w.used ? "Remove" : "Add"}
               </button>

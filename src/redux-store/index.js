@@ -4,8 +4,20 @@ const dataSlice = createSlice({
   name: "data",
   initialState: {
     workoutPlannerRefs: [
-      { handle: "etk-press-ladder", used: false, update: 0 },
-      { handle: "hiking-with-weight", used: false, update: 0 },
+      {
+        handle: "etk-press-ladder",
+        shortName: "ETK Press",
+        fullName: "ETK Press Ladder Protocol",
+        used: false,
+        update: 0,
+      },
+      {
+        handle: "hiking-with-weight",
+        shortName: "Hiking",
+        fullName: "Hiking with weight",
+        used: false,
+        update: 0,
+      },
     ],
     hystory: [],
     update: 0,
@@ -21,6 +33,7 @@ const dataSlice = createSlice({
             used: true,
             update: w.update + 1,
             id: workout.id,
+            data: workout.data,
           };
         }
         return w;

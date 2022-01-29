@@ -39,3 +39,11 @@ etk-container {
   text-align: center;
   flex-grow: 1;
 }
+
+.exit button {
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  margin-top: 1rem;
+  font-size: 1rem;
+}
