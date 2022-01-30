@@ -1,14 +1,14 @@
+import { useContext } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import workoutsStore from "..";
+import AppContext from "../../context-store/app-context";
+import updateWorkoutThunk from "../../redux-store/thunks/update-workout";
 
-const useExit = (
-  ladders,
-  minSets,
-  minRungs,
-  lastAchieved,
-  nextTarget,
-  targetWorkout
-) => {
+const useExit = (ladders, minSets, minRungs, targetWorkout) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const auth = useContext(AppContext).isLogged;
 
   return () => {
     // Get only the completed ladders
@@ -38,55 +38,20 @@ const useExit = (
       else {
         alert("The workout is done! Saving and exiting...");
 
-        // Update the lastAchieved array
-        let achieved = achievedLadders.map((ladder, index) =>
-          Math.max(ladder.length, lastAchieved[index])
-        );
-        if (achieved.length < 5) {
-          for (let i = achieved.length; i < 5; i++) {
-            achieved.push(lastAchieved[i] || 0);
-          }
-        }
-
-        // Update the nextTarget
-        let updatedTarget = nextTarget;
-        const [minLadder, maxLadder, uniform] = achievedLadders.reduce(
-          (result, ladder) => {
-            let [min, max, uniform] = result;
-            if (min > ladder.length) {
-              min = ladder.length;
-            }
-            if (max < ladder.length) {
-              max = ladder.length;
-            }
-            uniform = ladder.length === uniform && ladder.length;
-
-            return [min, max, uniform];
-          },
-          [10, -10, achievedLadders[0].length]
-        );
-        if (uniform && maxLadder === nextTarget && achievedLadders.length === 5) {
-          updatedTarget = nextTarget + 1;
-        }
-        if (uniform && updatedTarget === 6) {
-          updatedTarget = 3;
-        }
-
         // Construct the data property
         const nextData = {
           name: targetWorkout.handle,
-          data: {
-            ...targetWorkout.data,
-            lastAchieved: achieved,
-            nextTarget: updatedTarget,
-          },
+          data: workoutsStore
+            .get(targetWorkout.handle)
+            .getNextWorkoutTargetData(targetWorkout.data, achievedLadders),
         };
 
         const dataToDispatch = {
           id: targetWorkout.id,
           data: nextData,
         };
-        console.log(dataToDispatch);
+
+        dispatch(updateWorkoutThunk(dataToDispatch, auth));
       }
     }
   };

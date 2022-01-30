@@ -1,6 +1,18 @@
 const constructLadders = (nextTarget, nextWorkoutType, lastAchieved) => {
   // Determining Ladders parameters
   let targetRungs = nextTarget;
+  const lastAchievedWasPromptedProgress = lastAchieved.reduce(
+    (uniform, ladder) => {
+      return uniform === ladder && ladder;
+    },
+    lastAchieved[0]
+  );
+  if (
+    lastAchievedWasPromptedProgress &&
+    lastAchievedWasPromptedProgress === nextTarget - 1
+  ) {
+    targetRungs -= 1;
+  }
 
   let minSets = targetRungs === 3 ? 3 : 5;
 

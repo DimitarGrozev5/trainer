@@ -87,137 +87,66 @@ const etkPressLadder = () => {
       };
     },
 
+    ////////////////////////////////////// Function to return the next target data
+    getNextWorkoutTargetData: (currentData, achievedLadders) => {
+      // Update the lastAchieved array
+      let achieved = achievedLadders.map((ladder, index) =>
+        Math.max(ladder.length, currentData.lastAchieved[index])
+      );
+      if (achieved.length < 5) {
+        for (let i = achieved.length; i < 5; i++) {
+          achieved.push(currentData.lastAchieved[i] || 0);
+        }
+      }
+      let updatedTarget;
+      let nextWorkoutType = (currentData.nextWorkoutType % 3) + 1;
+
+      // Get the date
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      if (currentData.nextWorkoutType === 1) {
+        // Update the nextTarget
+        updatedTarget = currentData.nextTarget;
+        const [minLadder, maxLadder, uniform] = achievedLadders.reduce(
+          (result, ladder) => {
+            let [min, max, uniform] = result;
+            if (min > ladder.length) {
+              min = ladder.length;
+            }
+            if (max < ladder.length) {
+              max = ladder.length;
+            }
+            uniform = ladder.length === uniform && ladder.length;
+
+            return [min, max, uniform];
+          },
+          [10, -10, achievedLadders[0].length]
+        );
+        if (
+          uniform &&
+          maxLadder === currentData.nextTarget &&
+          achievedLadders.length === 5
+        ) {
+          updatedTarget = currentData.nextTarget + 1;
+        }
+        if (uniform && updatedTarget === 6) {
+          updatedTarget = 3;
+        }
+      } else {
+        updatedTarget = currentData.nextTarget;
+      }
+
+      return {
+        lastAchieved: achieved,
+        nextTarget: updatedTarget,
+        nextWorkoutType: nextWorkoutType,
+        nextWorkoutDate: +today,
+      };
+    },
+
     ////////////////////////////////////// Function to return the Workout Component
     Component: EtkComponent,
-  };
-};
-
-let etkPressLadder1 = () => {
-  // Init Data
-  let nextWorkoutDate = null;
-  let nextWorkoutType = null;
-  let nextTarget = null;
-  let lastAchieved = null;
-
-  // Workouts
-  const workouts = [
-    null,
-    {
-      description: () => {
-        let ladder = [];
-        for (let i = 1; i <= nextTarget; i++) {
-          ladder.push(i);
-        }
-        ladder = ladder.join(", ");
-        return `Try to do 5x (${ladder})`;
-      },
-    },
-    {
-      description: () => {
-        let ladder = [];
-        for (let i = 1; i <= nextTarget - 2; i++) {
-          ladder.push(i);
-        }
-        ladder = ladder.join(", ");
-        return `Do 5x (${ladder})`;
-      },
-    },
-    {
-      description: () => {
-        let ladder = [];
-        for (let i = 1; i <= nextTarget - 1; i++) {
-          ladder.push(i);
-        }
-        ladder = ladder.join(", ");
-        return `Do 5x (${ladder})`;
-      },
-    },
-  ];
-
-  const WORKOUT_REPEAT = 2 * 24 * 60 * 60 * 1000;
-  const name = "ETK";
-  const fullName = "ETK Press Ladder Protocol";
-
-  const completeWorkout = (achieved) => {
-    nextWorkoutDate = new Date(+nextWorkoutDate + WORKOUT_REPEAT);
-    nextWorkoutType = (nextWorkoutType % 3) + 1;
-    lastAchieved = achieved;
-
-    nextTarget = 0;
-  };
-
-  return {
-    handle: "etk-press-ladder",
-    init: (data) => {
-      const nextWorkoutSnaped = new Date(data.nextWorkoutDate);
-      nextWorkoutSnaped.setHours(0, 0, 0, 0);
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-
-      nextWorkoutDate = nextWorkoutSnaped < today ? today : nextWorkoutSnaped;
-
-      nextWorkoutType = data.nextWorkoutType;
-      nextTarget = data.nextTarget;
-      lastAchieved = data.lastAchieved;
-    },
-    currentData() {
-      return {
-        nextWorkoutDate: +nextWorkoutDate,
-        nextWorkoutType,
-        nextTarget,
-        lastAchieved,
-      };
-    },
-    get initialData() {
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      return {
-        nextWorkoutDate: +today,
-        nextWorkoutType: 1,
-        nextTarget: 3,
-        lastAchieved: [0, 0, 0, 0, 0],
-      };
-    },
-    get nextWorkout() {
-      return nextWorkoutDate;
-    },
-    checkDate: (dateObject) => {
-      dateObject.setHours(0, 0, 0, 0);
-      if (dateObject < nextWorkoutDate) {
-        return false;
-      }
-      const diff = +dateObject - +nextWorkoutDate;
-      if (diff % WORKOUT_REPEAT === 0) {
-        return name;
-      }
-      return false;
-    },
-
-    getName: () => name,
-
-    getFullName: () => fullName,
-
-    getWorkoutDescription: function (date) {
-      if (!this.checkDate(date)) {
-        return "No workout today";
-      }
-      // Calculate workout number
-      date.setHours(0, 0, 0, 0);
-      const diff = +date - +nextWorkoutDate;
-      const fullCicles = diff / WORKOUT_REPEAT;
-      const targetWorkout = ((nextWorkoutType + fullCicles - 1) % 3) + 1;
-
-      return workouts[targetWorkout].description();
-    },
-
-    skip: () => {
-      nextWorkoutDate = new Date(+nextWorkoutDate + WORKOUT_REPEAT);
-      nextWorkoutType = (nextWorkoutType % 3) + 1;
-    },
-
-    get Component() {
-      return EtkComponent(nextWorkoutType, nextTarget, lastAchieved, this);
-    },
   };
 };
 

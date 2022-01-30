@@ -20,9 +20,9 @@ const EtkComponent = (props) => {
   let nextWorkoutType = targetWorkout.data.nextWorkoutType;
   let nextTarget = targetWorkout.data.nextTarget;
   let lastAchieved = targetWorkout.data.lastAchieved;
-  // nextWorkoutType = 1;
-  // nextTarget = 5;
-  // lastAchieved = [3, 3, 3, 3, 3];
+  // nextWorkoutType = 2;
+  // nextTarget = 4;
+  lastAchieved = [3, 3, 3, 3, 3];
 
   // Construct ladders and helper values
   const [laddersArr, minSets, minRungs, maxRungs] = constructLadders(
@@ -49,7 +49,7 @@ const EtkComponent = (props) => {
   };
 
   // Set up exit handling
-  const exit = useExit(ladders, minSets, minRungs, lastAchieved, nextTarget, targetWorkout);
+  const exit = useExit(ladders, minSets, minRungs, targetWorkout);
 
   const exitHandler = () => {
     exit();
