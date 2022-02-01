@@ -19,7 +19,7 @@ function App() {
   // Effect that loads data from the server and updat it to the store
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(fetchDataFromDB(isLogged));
+    isLogged && dispatch(fetchDataFromDB(isLogged));
     const DUMMY_HYSTORY = [];
   }, [dispatch]);
 
@@ -28,7 +28,7 @@ function App() {
   return (
     <Routes>
       {isLogged && (
-        <Route path="/" element={<PageTemplate />}>
+        <Route path="/trainer" element={<PageTemplate />}>
           <Route index element={<Navigate to="trainer" />} />
           <Route path="login" element={<Navigate to="/" />} />
           <Route path="trainer" element={<TrainerHub />}></Route>
@@ -38,7 +38,7 @@ function App() {
         </Route>
       )}
       {!isLogged && (
-        <Route path="/" element={<PageTemplate />}>
+        <Route path="/trainer" element={<PageTemplate />}>
           <Route index element={<Navigate to="login" />} />
           <Route path="login" element={<Login />} />
           <Route path="*" element={<Navigate to="/login" />} />

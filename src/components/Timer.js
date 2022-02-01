@@ -1,5 +1,4 @@
-import React, { useEffect, useImperativeHandle } from "react";
-import { useState } from "react/cjs/react.development";
+import React, { useEffect, useImperativeHandle, useState } from "react";
 import styles from "./Timer.module.css";
 
 const formatTime = (time) => {

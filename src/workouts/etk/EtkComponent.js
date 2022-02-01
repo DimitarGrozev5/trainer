@@ -1,12 +1,12 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react/cjs/react.development";
 import Timer from "../../components/Timer";
 import styles from "./EtkComponent.module.css";
 import constructLadders from "./constructLadders";
 import useDoLadder from "./useDoLadder";
 import useExit from "./useExit";
+import workoutsStore from "..";
 
 const EtkComponent = (props) => {
   const timerRef = useRef();
@@ -17,19 +17,16 @@ const EtkComponent = (props) => {
   const targetWorkout = props.workout;
   // console.log(targetWorkout);
 
-  let nextWorkoutType = targetWorkout.data.nextWorkoutType;
-  let nextTarget = targetWorkout.data.nextTarget;
   let lastAchieved = targetWorkout.data.lastAchieved;
   // nextWorkoutType = 2;
   // nextTarget = 4;
-  lastAchieved = [3, 3, 3, 3, 3];
+  // lastAchieved = [3, 3, 3, 3, 3];
 
   // Construct ladders and helper values
-  const [laddersArr, minSets, minRungs, maxRungs] = constructLadders(
-    nextTarget,
-    nextWorkoutType,
-    lastAchieved
-  );
+  const [minSets, minRungs, maxRungs] = workoutsStore
+    .get(targetWorkout.handle)
+    .nextWorkoutHelperValues(targetWorkout.data);
+  const laddersArr = constructLadders(maxRungs, lastAchieved);
 
   const [ladders, setLadders] = useState(laddersArr);
   const [nextButton, setNextButton] = useState([[0, 0]]);

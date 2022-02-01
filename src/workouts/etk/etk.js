@@ -3,6 +3,42 @@ import EtkComponent from "./EtkComponent";
 const etkPressLadder = () => {
   const WORKOUT_REPEAT = 2 * 24 * 60 * 60 * 1000;
 
+  const nextWorkoutData = (workoutData) => {
+    let nextTarget = workoutData.nextTarget;
+    let nextWorkoutType = workoutData.nextWorkoutType;
+    let lastAchieved = workoutData.lastAchieved;
+    // Determining Ladders parameters
+    let targetRungs = nextTarget;
+    const lastAchievedWasPromptedProgress = lastAchieved.reduce(
+      (uniform, ladder) => {
+        return uniform === ladder && ladder;
+      },
+      lastAchieved[0]
+    );
+    if (
+      lastAchievedWasPromptedProgress &&
+      lastAchievedWasPromptedProgress === nextTarget - 1 &&
+      nextWorkoutType !== 1
+    ) {
+      targetRungs -= 1;
+    }
+
+    let minSets = targetRungs === 3 ? 3 : 5;
+
+    let minRungs = targetRungs === 5 ? 4 : 3;
+    let maxRungs = targetRungs;
+
+    if (nextWorkoutType === 2) {
+      minRungs = targetRungs - 2;
+      maxRungs = minRungs;
+    } else if (nextWorkoutType === 3) {
+      minRungs = targetRungs - 1;
+      maxRungs = minRungs;
+    }
+
+    return [minSets, minRungs, maxRungs];
+  };
+
   return {
     ////////////////////////////////////// Function to check if there is a workout scheduled for the given date
     checkDate: (workoutData, todayDate) => {
@@ -25,6 +61,19 @@ const etkPressLadder = () => {
       const fullCicles = diff / WORKOUT_REPEAT;
       const targetWorkout =
         ((workoutData.nextWorkoutType + fullCicles - 1) % 3) + 1;
+
+      // Get Helper values
+      const [minSets, minRungs, maxRungs] = nextWorkoutData({
+        ...workoutData,
+        nextWorkoutType: targetWorkout,
+      });
+
+      let ladder = [];
+      for (let i = 1; i <= maxRungs; i++) {
+        ladder.push(i);
+      }
+      ladder = ladder.join(", ");
+      return `Do 5x (${ladder})`;
 
       // Workouts
       const workouts = [
@@ -133,6 +182,10 @@ const etkPressLadder = () => {
         if (uniform && updatedTarget === 6) {
           updatedTarget = 3;
         }
+
+        if (updatedTarget === 3) {
+          achieved = [0, 0, 0, 0, 0];
+        }
       } else {
         updatedTarget = currentData.nextTarget;
       }
@@ -141,8 +194,13 @@ const etkPressLadder = () => {
         lastAchieved: achieved,
         nextTarget: updatedTarget,
         nextWorkoutType: nextWorkoutType,
-        nextWorkoutDate: +today,
+        nextWorkoutDate: +today + WORKOUT_REPEAT,
       };
+    },
+
+    ////////////////////////////////////// Function to return the next workout helper values
+    nextWorkoutHelperValues: (workoutData) => {
+      return nextWorkoutData(workoutData);
     },
 
     ////////////////////////////////////// Function to return the Workout Component

@@ -9,14 +9,12 @@ const dataSlice = createSlice({
         shortName: "ETK Press",
         fullName: "ETK Press Ladder Protocol",
         used: false,
-        update: 0,
       },
       {
         handle: "hiking-with-weight",
         shortName: "Hiking",
         fullName: "Hiking with weight",
         used: false,
-        update: 0,
       },
     ],
     hystory: [],
@@ -24,14 +22,14 @@ const dataSlice = createSlice({
   },
   reducers: {
     addWorkouts(state, action) {
-      const usedWorkouts = action.payload.reduxData;
+      const usedWorkouts = action.payload;
+      // console.log(usedWorkouts)
       state.workoutPlannerRefs = state.workoutPlannerRefs.map((w) => {
         const workout = usedWorkouts.find((e) => e.name === w.handle);
         if (workout) {
           return {
             ...w,
             used: true,
-            update: w.update + 1,
             id: workout.id,
             data: workout.data,
           };

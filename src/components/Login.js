@@ -14,7 +14,8 @@ const Login = () => {
     const enteredEmail = emailRef.current.value;
     const enteredPass = passRef.current.value;
 
-    fetch("http://127.0.0.1/trainer-api/trainer-api/login.php", {
+    // fetch("http://127.0.0.1/trainer-api/trainer-api/login.php", {
+    fetch("https://bgstrans.online/trainer/trainer-api/login.php", {
       method: "POST",
       mode: "cors",
       body: JSON.stringify({

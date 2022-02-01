@@ -1,8 +1,10 @@
+import { dataActions } from "..";
 import loadWorkoutDataThunk from "./load-workout-data";
 
 const fetchDataFromDB = (auth) => (dispatch, getState) => {
   // Configure Fetch
-  fetch("http://127.0.0.1/trainer-api/trainer-api/get-data.php", {
+  // fetch("http://127.0.0.1/trainer-api/trainer-api/get-data.php", {
+  fetch("https://bgstrans.online/trainer/trainer-api/get-data.php", {
     method: "POST",
     mode: "cors",
     body: JSON.stringify({
@@ -40,13 +42,14 @@ const fetchDataFromDB = (auth) => (dispatch, getState) => {
     // Parse response data and despatch action
     .then((parsedJSON) => {
       if (!parsedJSON.noData) {
-        const fullyParsedData = parsedJSON.map(({ id, data }) => {
+        const fullyParsedData = parsedJSON.map(({ id, data, name }) => {
           return {
             id,
-            ...JSON.parse(data),
+            name,
+            data: JSON.parse(data),
           };
         });
-        dispatch(loadWorkoutDataThunk(fullyParsedData));
+        dispatch(dataActions.addWorkouts(fullyParsedData));
       }
     })
     .catch((err) => {

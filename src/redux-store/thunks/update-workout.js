@@ -1,3 +1,4 @@
+import { dataActions } from "..";
 import workoutsStore from "../../workouts";
 import dispatchToServer from "./dispatch-to-server";
 import loadWorkoutDataThunk from "./load-workout-data";
@@ -5,10 +6,8 @@ import loadWorkoutDataThunk from "./load-workout-data";
 const updateWorkoutThunk = (targetWorkout, auth) => (dispatch, getState) => {
   const data = {
     id: targetWorkout.id,
-    data: JSON.stringify({
-      name: targetWorkout.handle,
-      data: { ...targetWorkout.data },
-    }),
+    name: targetWorkout.handle,
+    data: JSON.stringify(targetWorkout.data),
   };
 
   dispatchToServer({
@@ -21,13 +20,10 @@ const updateWorkoutThunk = (targetWorkout, auth) => (dispatch, getState) => {
   }).then((result) => {
     if (result) {
       dispatch(
-        loadWorkoutDataThunk([
+        dataActions.addWorkouts([
           {
-            name: targetWorkout.handle,
-            data: workoutsStore
-              .get(targetWorkout.handle)
-              .skip(targetWorkout.data),
-            id: targetWorkout.id,
+            ...data,
+            data: targetWorkout.data,
           },
         ])
       );

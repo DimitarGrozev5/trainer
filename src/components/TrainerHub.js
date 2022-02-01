@@ -1,6 +1,5 @@
-import React from "react";
+import React,{ useState } from "react";
 import { Link } from "react-router-dom";
-import { useState } from "react/cjs/react.development";
 import Calendar from "./calendar/Calendar";
 import Today from "./today/Today";
 import styles from "./TrainerHub.module.css";
@@ -73,7 +72,7 @@ const TrainerHub = () => {
         {nextMonthName}
       </div>
       <div className={styles.add}>
-        <Link to="/trainer/add-workout">+</Link>
+        <Link to="/trainer/trainer/add-workout">+</Link>
       </div>
     </main>
   );

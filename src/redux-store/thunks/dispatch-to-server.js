@@ -1,6 +1,7 @@
 const dispatchToServer = (action, debug = false) => {
   return new Promise((resolve, reject) =>
-    fetch("http://127.0.0.1/trainer-api/trainer-api/dispatch-action.php", {
+    // fetch("http://127.0.0.1/trainer-api/trainer-api/dispatch-action.php", {
+    fetch("https://bgstrans.online/trainer/trainer-api/dispatch-action.php", {
       method: "POST",
       mode: "cors",
       body: JSON.stringify(action),

@@ -1,6 +1,5 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react/cjs/react.development";
 import addNewWorkoutThunk from "../redux-store/thunks/add-new-workout";
 import workoutsStore from "../workouts";
 import AppContext from "../context-store/app-context";

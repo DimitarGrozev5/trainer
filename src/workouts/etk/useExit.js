@@ -38,20 +38,17 @@ const useExit = (ladders, minSets, minRungs, targetWorkout) => {
       else {
         alert("The workout is done! Saving and exiting...");
 
-        // Construct the data property
-        const nextData = {
-          name: targetWorkout.handle,
+        const dataToDispatch = {
+          id: targetWorkout.id,
+          handle: targetWorkout.handle,
           data: workoutsStore
             .get(targetWorkout.handle)
             .getNextWorkoutTargetData(targetWorkout.data, achievedLadders),
         };
-
-        const dataToDispatch = {
-          id: targetWorkout.id,
-          data: nextData,
-        };
+        console.log(dataToDispatch);
 
         dispatch(updateWorkoutThunk(dataToDispatch, auth));
+        navigate("/trainer", { replace: true });
       }
     }
   };

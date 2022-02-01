@@ -1,32 +1,4 @@
-const constructLadders = (nextTarget, nextWorkoutType, lastAchieved) => {
-  // Determining Ladders parameters
-  let targetRungs = nextTarget;
-  const lastAchievedWasPromptedProgress = lastAchieved.reduce(
-    (uniform, ladder) => {
-      return uniform === ladder && ladder;
-    },
-    lastAchieved[0]
-  );
-  if (
-    lastAchievedWasPromptedProgress &&
-    lastAchievedWasPromptedProgress === nextTarget - 1
-  ) {
-    targetRungs -= 1;
-  }
-
-  let minSets = targetRungs === 3 ? 3 : 5;
-
-  let minRungs = targetRungs === 5 ? 4 : 3;
-  let maxRungs = targetRungs;
-
-  if (nextWorkoutType === 2) {
-    minRungs = targetRungs - 2;
-    maxRungs = minRungs;
-  } else if (nextWorkoutType === 3) {
-    minRungs = targetRungs - 1;
-    maxRungs = minRungs;
-  }
-
+const constructLadders = (maxRungs, lastAchieved) => {
   // Constructiong the Ladders array and setting up component state
   const laddersArr = [];
   for (let i = 0; i < 5; i++) {
@@ -40,7 +12,7 @@ const constructLadders = (nextTarget, nextWorkoutType, lastAchieved) => {
     }
   }
 
-  return [laddersArr, minSets, minRungs, maxRungs];
+  return laddersArr;
 };
 
 export default constructLadders;

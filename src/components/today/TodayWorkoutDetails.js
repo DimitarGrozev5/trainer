@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react/cjs/react.development";
 import AppContext from "../../context-store/app-context";
 import { dataActions } from "../../redux-store";
 import updateWorkoutThunk from "../../redux-store/thunks/update-workout";
@@ -31,7 +31,10 @@ const TodayWorkoutDetails = (props) => {
     navigate(props.workout.handle, { replace: true });
   };
   const skipWorkoutHandler = () => {
-    dispatch(updateWorkoutThunk(props.workout, ctx.isLogged));
+    const skipedData = workoutFunctions.skip(props.workout.data);
+    dispatch(
+      updateWorkoutThunk({ ...props.workout, data: skipedData }, ctx.isLogged)
+    );
   };
 
   return (
