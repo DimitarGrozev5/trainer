@@ -14,9 +14,12 @@ const formatTime = (time) => {
 };
 
 const Timer = (props, ref) => {
-  const [timerInterval, setTimerInterval] = useState(180);
+  const initTime = props.initTime || 180;
+  const timerStep = props.step || 30;
+
+  const [timerInterval, setTimerInterval] = useState(+initTime);
   const [running, setRunning] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(180);
+  const [timeLeft, setTimeLeft] = useState(+initTime);
 
   const changeIntervalHandler = (amount) => () => {
     setTimerInterval((interval) => interval + amount);
@@ -65,7 +68,7 @@ const Timer = (props, ref) => {
       stopTimer: () => {
         setTimeLeft(timerInterval);
         setRunning(false);
-      }
+      },
     }),
     [timerInterval]
   );
@@ -91,7 +94,9 @@ const Timer = (props, ref) => {
       <div className={clockClassList}>{formatTime(timeLeft)}</div>
       <ul className={styles.controls}>
         <li>
-          <button onClick={changeIntervalHandler(-30)}>-30s</button>
+          <button onClick={changeIntervalHandler(-1 * timerStep)}>
+            -{timerStep}s
+          </button>
         </li>
         <li>
           <button>Mute</button>
@@ -102,7 +107,9 @@ const Timer = (props, ref) => {
           </button>
         </li>
         <li>
-          <button onClick={changeIntervalHandler(30)}>+30s</button>
+          <button onClick={changeIntervalHandler(timerStep)}>
+            +{timerStep}s
+          </button>
         </li>
       </ul>
     </React.Fragment>

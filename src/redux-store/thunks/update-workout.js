@@ -1,7 +1,5 @@
 import { dataActions } from "..";
-import workoutsStore from "../../workouts";
 import dispatchToServer from "./dispatch-to-server";
-import loadWorkoutDataThunk from "./load-workout-data";
 
 const updateWorkoutThunk = (targetWorkout, auth) => (dispatch, getState) => {
   const data = {

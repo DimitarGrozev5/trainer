@@ -1,8 +1,7 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import AppContext from "../../context-store/app-context";
-import { dataActions } from "../../redux-store";
 import updateWorkoutThunk from "../../redux-store/thunks/update-workout";
 import workoutsStore from "../../workouts";
 import styles from "./TodayWorkoutDetails.module.css";

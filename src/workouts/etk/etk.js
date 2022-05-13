@@ -63,7 +63,7 @@ const etkPressLadder = () => {
         ((workoutData.nextWorkoutType + fullCicles - 1) % 3) + 1;
 
       // Get Helper values
-      const [minSets, minRungs, maxRungs] = nextWorkoutData({
+      const [, , maxRungs] = nextWorkoutData({
         ...workoutData,
         nextWorkoutType: targetWorkout,
       });
@@ -74,43 +74,6 @@ const etkPressLadder = () => {
       }
       ladder = ladder.join(", ");
       return `Do 5x (${ladder})`;
-
-      // Workouts
-      const workouts = [
-        null,
-        {
-          description: () => {
-            let ladder = [];
-            for (let i = 1; i <= workoutData.nextTarget; i++) {
-              ladder.push(i);
-            }
-            ladder = ladder.join(", ");
-            return `Try to do 5x (${ladder})`;
-          },
-        },
-        {
-          description: () => {
-            let ladder = [];
-            for (let i = 1; i <= workoutData.nextTarget - 2; i++) {
-              ladder.push(i);
-            }
-            ladder = ladder.join(", ");
-            return `Do 5x (${ladder})`;
-          },
-        },
-        {
-          description: () => {
-            let ladder = [];
-            for (let i = 1; i <= workoutData.nextTarget - 1; i++) {
-              ladder.push(i);
-            }
-            ladder = ladder.join(", ");
-            return `Do 5x (${ladder})`;
-          },
-        },
-      ];
-
-      return workouts[targetWorkout].description();
     },
 
     ////////////////////////////////////// Function to return an updated state, that skips the next workout
@@ -157,7 +120,7 @@ const etkPressLadder = () => {
       if (currentData.nextWorkoutType === 1) {
         // Update the nextTarget
         updatedTarget = currentData.nextTarget;
-        const [minLadder, maxLadder, uniform] = achievedLadders.reduce(
+        const [, maxLadder, uniform] = achievedLadders.reduce(
           (result, ladder) => {
             let [min, max, uniform] = result;
             if (min > ladder.length) {

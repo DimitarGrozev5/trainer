@@ -1,4 +1,4 @@
-import { configureStore, createSlice, current } from "@reduxjs/toolkit";
+import { configureStore, createSlice } from "@reduxjs/toolkit";
 
 const dataSlice = createSlice({
   name: "data",
@@ -14,6 +14,12 @@ const dataSlice = createSlice({
         handle: "hiking-with-weight",
         shortName: "Hiking",
         fullName: "Hiking with weight",
+        used: false,
+      },
+      {
+        handle: "slow-twitch-hell",
+        shortName: "Enduro Grip",
+        fullName: "Grip Slow Twitch Endurance",
         used: false,
       },
     ],

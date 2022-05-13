@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import styles from "./Calendar.module.css";
 import CalendarDay from "./CalendarDay";
 

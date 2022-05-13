@@ -1,20 +1,16 @@
-.etk-container {
+.container {
   display: flex;
   flex-direction: column;
 }
 
-.ladder {
+.sets {
   display: flex;
-  margin-bottom: 0.5rem;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  padding: 1rem 0rem;
 }
 
-.rung {
-  flex-grow: 1;
-  text-align: center;
-}
-
-.rung button {
-  display: inline-block;
+.sets > button {
   width: 4rem;
   height: 4rem;
   font-size: 1.5rem;
@@ -24,20 +20,10 @@
   background-color: white;
 }
 
-.achieved button {
-  border: 1px solid black;
-  color: black;
-}
-
-.executed button {
+.sets > button.done {
   border: 1px solid green;
   color: green;
   background-color: lightgreen;
-}
-
-.timer {
-  text-align: center;
-  flex-grow: 1;
 }
 
 .exit button {

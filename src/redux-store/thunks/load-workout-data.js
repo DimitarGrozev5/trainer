@@ -1,5 +1,4 @@
 import { dataActions } from "..";
-import workoutsStore from "../../workouts";
 
 const loadWorkoutDataThunk = (data) => (dispatch, getState) => {
   // Initialize workouts

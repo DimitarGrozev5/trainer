@@ -1,6 +1,5 @@
 import { dataActions } from "..";
 import dispatchToServer from "./dispatch-to-server";
-import loadWorkoutDataThunk from "./load-workout-data";
 
 const addNewWorkoutThunk =
   (handle, initData, auth, redirect) => (dispatch, getState) => {

@@ -1,5 +1,4 @@
 import { dataActions } from "..";
-import loadWorkoutDataThunk from "./load-workout-data";
 
 const fetchDataFromDB = (auth) => (dispatch, getState) => {
   // Configure Fetch

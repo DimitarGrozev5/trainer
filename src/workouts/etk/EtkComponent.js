@@ -1,6 +1,4 @@
 import React, { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import Timer from "../../components/Timer";
 import styles from "./EtkComponent.module.css";
 import constructLadders from "./constructLadders";
@@ -10,9 +8,6 @@ import workoutsStore from "..";
 
 const EtkComponent = (props) => {
   const timerRef = useRef();
-
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const targetWorkout = props.workout;
   // console.log(targetWorkout);
