@@ -22,6 +22,12 @@ const dataSlice = createSlice({
         fullName: "Grip Slow Twitch Endurance",
         used: false,
       },
+      {
+        handle: "add-a-rep",
+        shortName: "rfJ",
+        fullName: "AddA RepA Day",
+        used: false,
+      },
     ],
     hystory: [],
     update: 0,
