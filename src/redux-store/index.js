@@ -10,12 +10,12 @@ const dataSlice = createSlice({
         fullName: "ETK Press Ladder Protocol",
         used: false,
       },
-      {
-        handle: "hiking-with-weight",
-        shortName: "Hiking",
-        fullName: "Hiking with weight",
-        used: false,
-      },
+      // {
+      //   handle: "hiking-with-weight",
+      //   shortName: "Hiking",
+      //   fullName: "Hiking with weight",
+      //   used: false,
+      // },
       {
         handle: "slow-twitch-hell",
         shortName: "Enduro Grip",
@@ -26,6 +26,12 @@ const dataSlice = createSlice({
         handle: "add-a-rep",
         shortName: "rfJ",
         fullName: "AddA RepA Day",
+        used: false,
+      },
+      {
+        handle: "qd",
+        shortName: "Q&D",
+        fullName: "Quick & Dead",
         used: false,
       },
     ],

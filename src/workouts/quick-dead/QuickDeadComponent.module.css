@@ -1,0 +1,42 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+h1,
+h2 {
+  padding: 0px;
+  margin: 0px;
+}
+
+.control button {
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  margin-top: 1rem;
+  font-size: 1rem;
+}
+
+.clock {
+  display: flex;
+  font-size: 9rem;
+}
+
+.sign {
+  width: 4rem;
+}
+
+.sets {
+  list-style-type: none;
+  padding: 0px;
+  margin: 0px;
+  text-align: center;
+}
+
+.next-set {
+  font-size: 1.6rem;
+}
+
+.next-set + li {
+  font-size: 1.3rem;
+}
