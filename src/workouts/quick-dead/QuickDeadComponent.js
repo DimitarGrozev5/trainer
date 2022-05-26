@@ -83,6 +83,11 @@ const QuickDeadComponent = ({ workout }) => {
     setSessionStarted(true);
   };
 
+  const exit = useExit(workout);
+  const finishSessionHandler = () => {
+    exit([w.volume, w.repScheme]);
+  };
+
   // State for session setup ot execution
   const [sessionStarted, setSessionStarted] = useState(false);
 
@@ -116,7 +121,14 @@ const QuickDeadComponent = ({ workout }) => {
           </div>
         </>
       )}
-      {sessionStarted && <QDTimer {...w} />}
+      {sessionStarted && (
+        <>
+          <QDTimer {...w} />{" "}
+          <div className={styles.control}>
+            <button onClick={finishSessionHandler}>Finish session</button>
+          </div>
+        </>
+      )}
     </div>
   );
 };

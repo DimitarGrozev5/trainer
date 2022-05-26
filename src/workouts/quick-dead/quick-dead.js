@@ -49,7 +49,7 @@ const quickDead = () => {
     },
 
     ////////////////////////////////////// Function to return the next target data
-    getNextWorkoutTargetData: (currentData, [currentVolume, currentRepSheme]) => {
+    getNextWorkoutTargetData: ([currentVolume, currentRepSheme]) => {
       // Get the date
       const today = new Date();
       today.setHours(0, 0, 0, 0);
