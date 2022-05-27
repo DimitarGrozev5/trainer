@@ -10,7 +10,7 @@ const useExit = (targetWorkout) => {
   const dispatch = useDispatch();
   const auth = useContext(AppContext).isLogged;
 
-  return ([currentVolume, currentRepSheme]) => {
+  return (currentVolume) => {
     // If the workout is satisfactoraly done, save and exit
     alert("The workout is done! Saving and exiting...");
     const dataToDispatch = {
@@ -18,7 +18,7 @@ const useExit = (targetWorkout) => {
       handle: targetWorkout.handle,
       data: workoutsStore
         .get(targetWorkout.handle)
-        .getNextWorkoutTargetData([currentVolume, currentRepSheme]),
+        .getNextWorkoutTargetData(currentVolume),
     };
 
     dispatch(updateWorkoutThunk(dataToDispatch, auth));

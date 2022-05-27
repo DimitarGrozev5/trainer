@@ -6,10 +6,10 @@ const quickDead = () => {
   // workoutData = {
   //   lastVolume,
   //     40, 60, 80, 1000
-  //   lastRepScheme,
-  //     5 = 4x5, 10 = 2x10, 15 = alternate set by set
   //   nextWorkoutDate,
   // }
+  //   lastRepScheme, (it's no longer a part of the object)
+  //     5 = 4x5, 10 = 2x10, 15 = alternate set by set
 
   return {
     ////////////////////////////////////// Function to check if there is a workout scheduled for the given date
@@ -43,20 +43,18 @@ const quickDead = () => {
       today.setHours(0, 0, 0, 0);
       return {
         lastVolume: 100,
-        lastRepScheme: 10,
         nextWorkoutDate: +today,
       };
     },
 
     ////////////////////////////////////// Function to return the next target data
-    getNextWorkoutTargetData: ([currentVolume, currentRepSheme]) => {
+    getNextWorkoutTargetData: (currentVolume) => {
       // Get the date
       const today = new Date();
       today.setHours(0, 0, 0, 0);
 
       return {
         lastVolume: currentVolume,
-        lastRepScheme: currentRepSheme,
         nextWorkoutDate: +today + WORKOUT_REPEAT,
       };
     },

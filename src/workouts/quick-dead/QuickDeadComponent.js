@@ -55,11 +55,11 @@ const swingVariationFromDice = {
 
 const QuickDeadComponent = ({ workout }) => {
   // Get details from last session
-  const { lastRepScheme, lastVolume } = workout.data;
+  const { lastVolume } = workout.data;
 
   // Function to calculate random session
-  const randWorkout = (lastRepScheme, lastVolume) => {
-    const nextRepSchemeRoll = dice(repSchemeDice[lastRepScheme]);
+  const randWorkout = (lastVolume) => {
+    const nextRepSchemeRoll = dice([]);
     const nextVolumeRoll = dice(volumeDice[lastVolume]);
     const nextSwingVariationRoll = dice([]);
 
@@ -71,10 +71,10 @@ const QuickDeadComponent = ({ workout }) => {
   };
 
   // State for session parameters
-  const [w, setW] = useState(randWorkout(lastRepScheme, lastVolume));
+  const [w, setW] = useState(randWorkout(lastVolume));
 
   const changeWHandler = () => {
-    setW(randWorkout(lastRepScheme, lastVolume));
+    setW(randWorkout(lastVolume));
   };
   const offDayHandler = () => {
     setW({ repScheme: 5, volume: 40, swingVariation: 2 });
@@ -85,7 +85,7 @@ const QuickDeadComponent = ({ workout }) => {
 
   const exit = useExit(workout);
   const finishSessionHandler = () => {
-    exit([w.volume, w.repScheme]);
+    exit(w.volume);
   };
 
   // State for session setup ot execution

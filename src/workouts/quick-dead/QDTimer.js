@@ -2,12 +2,6 @@ import { useEffect, useState } from "react";
 import FormatTime from "./FormatTime";
 import styles from "./QuickDeadComponent.module.css";
 
-const next = (arr) => {
-  const p = arr.shift();
-  arr.push(p);
-  return p;
-};
-
 const getArrFromN = (n) => [...Array(n).keys()];
 
 const exerciseGenerator = function* (swingVariation) {
