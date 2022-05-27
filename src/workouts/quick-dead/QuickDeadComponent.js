@@ -13,12 +13,6 @@ const dice = (exclude) => {
   return rnd;
 };
 
-const repSchemeDice = {
-  5: [1, 2],
-  15: [3, 4],
-  10: [5, 6],
-};
-
 const volumeDice = {
   40: [1],
   60: [2, 3],
