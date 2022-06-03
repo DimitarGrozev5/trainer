@@ -1,7 +1,7 @@
 import QuickDeadComponent from "./QuickDeadComponent";
 
 const quickDead = () => {
-  const WORKOUT_REPEAT = 3 * 24 * 60 * 60 * 1000;
+  const WORKOUT_REPEAT = 2 * 24 * 60 * 60 * 1000;
 
   // workoutData = {
   //   lastVolume,
