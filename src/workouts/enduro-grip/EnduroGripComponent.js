@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./EnduroGripComponent.module.css";
 import Timer from "../../components/Timer";
 import useExit from "./useExit";
@@ -39,6 +39,35 @@ const EnduroGripComponent = ({ workout }) => {
     exit(achievedSets);
   };
 
+  // Metronome setup
+  const [tick, setTick] = useState(false);
+  const [nextTick, setNextTick] = useState(false);
+
+  const toggleTickHandler = () => {
+    setTick((t) => !t);
+  };
+
+  useEffect(() => {
+    let t = "";
+    if (tick) {
+      if (!nextTick) {
+        const now = +new Date();
+        setNextTick(now + 1000);
+      } else {
+        t = setInterval(() => {
+          const now = +new Date();
+          if (now >= nextTick) {
+            setNextTick((lastTick) => lastTick + 1000);
+            console.log("tick");
+          }
+        }, 100);
+      }
+    } else {
+      setNextTick(false);
+    }
+    return () => clearTimeout(t);
+  }, [tick, nextTick]);
+
   return (
     <div className={styles.container}>
       <div>
@@ -57,6 +86,11 @@ const EnduroGripComponent = ({ workout }) => {
             {i + 1}
           </button>
         ))}
+      </div>
+      <div className={styles.exit}>
+        <button onClick={toggleTickHandler}>
+          {tick ? "Stop" : "Start"} Ticking
+        </button>
       </div>
       <Timer ref={timerRef} initTime={5 * 60} step={60} />
       <div className={styles.exit}>
