@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./EnduroGripComponent.module.css";
 import Timer from "../../components/Timer";
 import useExit from "./useExit";
+import tickSound from "../../static/tick.mp3";
+import useSound from "use-sound";
 
 const EnduroGripComponent = ({ workout }) => {
   const timerRef = useRef();
@@ -47,6 +49,8 @@ const EnduroGripComponent = ({ workout }) => {
     setTick((t) => !t);
   };
 
+  const [playSound] = useSound(tickSound);
+
   useEffect(() => {
     let t = "";
     if (tick) {
@@ -58,7 +62,7 @@ const EnduroGripComponent = ({ workout }) => {
           const now = +new Date();
           if (now >= nextTick) {
             setNextTick((lastTick) => lastTick + 1000);
-            console.log("tick");
+            playSound();
           }
         }, 100);
       }
